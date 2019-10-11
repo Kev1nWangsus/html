@@ -5,6 +5,8 @@ html, body {
 	height: 100%;
 	margin: 0px;
 	padding: 0px;
+	
+	font-family: 'Open Sans', sans-serif;
 }
 
 .wrapper {
@@ -14,6 +16,11 @@ html, body {
 	display: flex;
 	flex-direction: row;
 	height: 100%;
+}
+
+.name {
+	font-family: 'Roboto', sans-serif;
+	margin-bottom: 2px;
 }
 
 .left {
