@@ -4,66 +4,73 @@
 		<title>Kevin Wang</title>
 		<meta name="KevinWebpage" content="width=device-width, initial-scale=1.0">
 		<meta charset="utf-8">
-    		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<link rel="stylesheet" type="text/css" href="test.css">
-		<link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto" rel="stylesheet">
+   		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="stylesheet" type="text/css" href="Kevin.css">
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-		<style>
-			.topnav ul {
-				list-style-type: none;
-				margin: 0;
-				padding: 0;
-				width: 25%;
-				background-color: #f1f1f1;
-				position: fixed;
-				height: 100%;
-				overflow: auto;
-			}
-
-			.topnav li a {
-			  	display: block;
-			  	color: #000;
-			  	padding: 8px 16px;
-			  	text-decoration: none;
-			}
-
-			.topnav li a.active {
-			  	background-color: #4CAF50;
-			  	color: white;
-			}
-
-			.topnav li a:hover:not(.active) {
-			  	background-color: #555;
-			  	color: white;
-			}						
-		</style>
-		
+	
 	</head>
 	<body>
-		<ul class="topnav">
-  			<li><a class="active" href="#home">Home</a></li>
-  			<li><a href="https://drive.google.com/drive/folders/11RacJDafTUjfn89Z_J4Phhikgq9NsQzJ?usp=sharing">Works</a></li>
-  			<li><a href="#contact">Contact</a></li>
-  			<li class="righttop"><a href="#about">About</a></li>
-		</ul>
-		<div class="wrapper">
-			<div class="left">
-				<img class="profile-pic" src="Kevin.jpg">
-				<h2 class="name">Kevin Wang</h2>
-				<h5>CE student<br>UC Santa Barbara</h5>
+		<!--Navigation-->
+		<nav id="navbar" class="navbar navbar-expand-sm bg-navbar fixed-top navbar-normal navbar-scroll">
+        	<div class="nav-container">
+            	<div id="navbar_main" class="collapse navbar-collapse">
+                	<ul class="navbar-nav">
+                    	<li class="navbar-item mr-5">
+                        <a href="#home" class="nav-link">Home</a>
+                    	</li>
+						<li class="navbar-item mr-5">
+                        <a href="#about" class="nav-link">About</a>
+                    	</li>
+                    	<li class="navbar-item mr-5">
+                        <a href="https://drive.google.com/drive/folders/11RacJDafTUjfn89Z_J4Phhikgq9NsQzJ?usp=sharing" class="nav-link">Works</a>
+                    	</li>
+                    	<li class="navbar-item">
+                        <a href="#contact" class="nav-link">Contact</a>
+                    	</li>
+                	</ul>
+            	</div>
+        	</div>
+    	</nav>
+		<!--Banner Page-->
+		<section id="home" class="banner">
+			<div class="title-section">
+				<div style="top:40%; position:absolute;">
+					<h1 class="title mb-4 font-weight:bold">Kevin Wang</h1>
+					<p class="subtitle my-1">Computer Engineering student</p>
+					<p class="subtitle">University of California, Santa Barbara</p>
+				</div>
 			</div>
-			
-			<div class="right">
-				<p class="bio">What's up guys! My name is Kevin Wang. I'm currently a first year computer engineering student in UC Santa Barbara.</p>
-				<ul class="social-links">
-					<li><a href="https://github.com/Kev1nWangsus">Github</a></li>
-					<li><a href="https://live.bilibili.com/14862896">Live Stream</a></li>
-				</ul>
+		</section>
+		<!--About Me-->
+		<section id="about" class="second">
+		<div class="container">
+			<div class="about-section" style="text-align:center">
+				<div id="about" class="align-middle">
+					<div class="row justify-content-end">
+						<div class="col-md-4 my-4" style="background-color:transparent">
+							<img class="profile-pic" src="Kevin.jpg">
+						</div>
+						<div class="col-md-8 py-md-5 pt-4 p-md-5">
+							<p>What's up, guys! My name is Kevin Wang. I'm currently a first year computer engineering student in UC Santa Barbara. My academic interests lie in computer science, mathematics and physics. Besides, I love playing basketball and League of Legends. I'm a big fan of Lakers, Chelsea and Funplus Phoenix.</p>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
+		</section>
+		<!--Contact Info-->
+		<section id="contact" class="third">
+			<div class="contactinfo">
+				<ul class="social-links">
+					<li><a href="https://github.com/Kev1nWangsus" class="list-inline-item ml-5">GitHub</a></li>
+					<li><a href="https://live.bilibili.com/14862896" class="list-inline-item ml-0">Live Stream</a></li>
+				</ul>
+			</div>
+		</section>
 
+        
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 	</body>
 </html>
