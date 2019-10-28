@@ -11,7 +11,7 @@ html, body {
 
 .title {
     font-family: "Ubuntu", sans-serif;
-    font-size: 3.5rem;
+    font-size: 2.5rem;
     color: black;
     text-shadow: 1px 1px 4px white;
 }
@@ -33,7 +33,7 @@ p {
 
 .second {
     background-color:transparent;
-    padding-top:150px;
+    padding-top:30vh;
     height: 100vh;
 }
 
@@ -61,6 +61,7 @@ p {
     width:100%;
 }
 .navbar-nav {
+    display: flex;
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -106,7 +107,7 @@ p {
 }
 
 .social-links a:hover {
-	background-color: rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0.1);
 }
 
 
