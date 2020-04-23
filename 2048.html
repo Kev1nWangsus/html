@@ -1,10 +1,17 @@
 <html>
 <body>
-    <div id="main" style="text-align:center">
-        <h1> My 2048! </h1>
-        <div id="game-container">
+    <div id="main" style="display:flex;justify-content: center;margin-top:50px">
+        <div id="game-container" style="text-align:center;display:table-cell;">
         </div>
+        <div id="scoreboard" style="width:300px;height:100px;background-color:dce4eb;display:table-cell;border-radius:20px;margin-left:10px;"> 
+            <h1 id="scoretext" style="margin-left:10px">Score: <span id="score">0</span></h1>
+            <div id="title" style="text-align:center;margin-top:50%">
+                <h1 style="font-size:80px;font-family: Consolas;"> 2048 </h1>
+            </div>
+        </div>
+        
     </div>
+    
     <script src="./2048.js"></script>
 </body>
 </html>

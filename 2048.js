@@ -17,11 +17,13 @@ randChoice = function(arr) {
 }
 
 sum = function (arr) {
-    var s = 0;
-    for (var i=arr.length-1; i>=0; i--) {
-      s += arr[i];
+    var res = 0;
+    for (var i = 0; i < arr.length; i++) {
+        for (var j = 0; j < arr[i].length; j++) {
+            res += arr[i][j];
+        }
     }
-    return s;
+    return res;
 }
 
 copyArray = function(arr1) {
@@ -225,8 +227,12 @@ class View {
                 }
             }
         }
+        this.drawScore(sum(this.game.data) - 4);
     }
 
+    drawScore(score) {
+        document.getElementById("score").innerText=score;
+    }
     drawBackgroundBlock(i, j, color) {
         let block = document.createElement("div");
         block.style.width = BLOCK_SIZE;
@@ -248,7 +254,7 @@ class View {
         span.style.lineHeight = "130px";
         span.style.fontFamily = "Consolas";
         span.style.fontWeight = "bold";
-        span.style.fontSize = "60px";
+        span.style.fontSize = "58px";
         span.appendChild(text);
         block.appendChild(span);
     }
