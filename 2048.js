@@ -155,8 +155,6 @@ class Game {
                 }
             }
         }
-        console.log(copy);
-        console.log(this.data);
         if (!compareArray(this.data, copy)){
             this.generateNewBlock();
             this.score += 2;
