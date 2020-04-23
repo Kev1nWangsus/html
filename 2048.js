@@ -1,11 +1,11 @@
 // Constant
 CANVAS_SIZE = 600;
-CANVAS_BACKGROUND_COLOR = "dce4eb"
+CANVAS_BACKGROUND_COLOR = "dce4eb";
 GAME_SIZE = 4;
 BLOCK_SIZE = 130;
-BLOCK_PLACEHOLDER_COLOR = "aebecb"
+BLOCK_PLACEHOLDER_COLOR = "c1cdd7";
 MARGIN_SIZE = (CANVAS_SIZE-BLOCK_SIZE*GAME_SIZE)/5;
-BLOCK_BACKGROUND_COLOR = "97bcde"
+BLOCK_BACKGROUND_COLOR_LIST = ["b1cde7", "9ec0e0", "97bcde", "8bb4da", "77a7d4", "649bce", "3d82c2", "31689b", "254e74", "254e74", "18344e"];
 
 // Global Utility Functions
 randInt = function(a, b) {
@@ -106,7 +106,7 @@ class Game {
         let head = 0;
         let tail = 1;
         let incr = 1;
-        if (reverse == true){
+        if (reverse == true) {
             head = arr.length - 1;
             tail = head - 1;
             incr = -1;
@@ -164,45 +164,42 @@ class Game {
     }
 }
 
-// Tests
-// class Test {
-//     static compareArray(arr1, arr2){
-//         if (arr1.length != arr2.length){
-//             return false;
-//         }
-//     }
+//Tests
+class Test {
+    static test_shiftBlock() {
+        let gameTest = new Game();
+        let testCases = [
+            [[2, 2, 2, 2], [4, 4, null, null]],
+            [[2, 2, null, 2], [4, 2, null, null]],
+            [[4, 2, null, 2], [4, 4, null, null]],
+            [[2, 4, null, 8], [2, 4, null, 8]],
+            [[null, null, null, null], [null, null, null, null]],
+            [[null, 4, 4, 8], [8, 8, null, null]]
+        ]
+        let errFlag = false;
 
-//     static test_shiftBlock(){
-//         let gameTest = new Game();
-//         let testCases = [
-//             [[2, 2, 2, 2], [4, 4, null, null]],
-//             [[2, 2, null, 2], [4, 2, null, null]],
-//         ]
-//         let errFlag = false;
+        for (let test of testCases) {
+            for (let reverse of [true, false]) {
+                let input = test[0].slice();
+                let result = test[1].slice();
+                if(reverse == true) {
+                    input.reverse();
+                    result.reverse();
+                }
+                gameTest.shiftBlock(input, reverse);
+                if(!compareArray(input, result)) {
+                    errFlag = true;
+                    console.log("Error!");
+                    console.log(input, result);
+                }
+            }
+        }
 
-//         for (let test of testCases) {
-//             for (let reverse of [true, false]){
-//                 let input = test[0].slice();
-//                 let result = test[1].slice();
-//                 if(reverse == true) {
-//                     input.reverse();
-//                     result.reverse();
-//                 }
-//                 gameTest.shiftBlock(input, reverse);
-//                 if(input != result){
-//                     errFlag = true;
-//                     console.log("Error!");
-//                     console.log(input, result);
-//                 }
-//             }
-            
-//         }
-
-//         if (!errFlag) {
-//             console.log("Passed!");
-//         }
-//     }
-// }
+        if (!errFlag) {
+            console.log("Passed!");
+        }
+    }
+}
 
 // View
 class View {
@@ -252,9 +249,10 @@ class View {
     drawBlock(i, j, number) {
         let span = document.createElement("span"); // span is an inline block
         let text = document.createTextNode(number);
-        let block = this.drawBackgroundBlock(i, j, BLOCK_BACKGROUND_COLOR);
+        let block = this.drawBackgroundBlock(i, j, BLOCK_BACKGROUND_COLOR_LIST[Math.floor(Math.log(number)/Math.log(2))-1]);
         span.style.textAlign = "center";
         span.style.lineHeight = "130px";
+        span.style.color = "white";
         span.style.fontFamily = "Consolas";
         span.style.fontWeight = "bold";
         span.style.fontSize = "58px";
