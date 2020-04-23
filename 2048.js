@@ -57,6 +57,7 @@ compareArray = function(arr1, arr2) {
 class Game {
     constructor() {
         this.data = [];
+        this.score = 0;
         this.initializeData();
     }
 
@@ -120,6 +121,7 @@ class Game {
                     tail += incr;
                 } else if (arr[head] == arr[tail]) {
                     arr[head] = arr[head] * 2;
+                    this.score += arr[head]
                     arr[tail] = null;
                     head += incr;
                     tail += incr;
@@ -157,6 +159,7 @@ class Game {
         console.log(this.data);
         if (!compareArray(this.data, copy)){
             this.generateNewBlock();
+            this.score += 2;
         }   
     }
 }
@@ -227,7 +230,7 @@ class View {
                 }
             }
         }
-        this.drawScore(sum(this.game.data) - 4);
+        this.drawScore(this.game.score);
     }
 
     drawScore(score) {
