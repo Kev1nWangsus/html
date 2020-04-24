@@ -85,7 +85,7 @@ class Game {
             }
         }
         let position = randChoice(possiblePositions);
-        this.data[position[0]][position[1]] = 2;
+        this.data[position[0]][position[1]] = randChoice([2, 2, 2, 2, 2, 2, 2, 2, 4]);
     }
 
     /*arr = [2, null, 2, null]
@@ -214,9 +214,18 @@ class View {
         this.container.style.backgroundColor = CANVAS_BACKGROUND_COLOR;
         this.container.style.position = "relative";
         this.container.style.display = "inline-block";
+        this.container.style.fontSize = 58;
     }
 
+    gridToPosition(i, j) {
+        let top = i *(BLOCK_SIZE + MARGIN_SIZE) + MARGIN_SIZE;
+        let left = j * (BLOCK_SIZE + MARGIN_SIZE) + MARGIN_SIZE;
+
+        return [top, left];
+    }
+    
     drawGame() {
+        this.container.innerHTML = "";
         for (let i = 0; i < GAME_SIZE; i++) {
             for (let j = 0; j < GAME_SIZE; j++) {
                 this.drawBackgroundBlock(i, j, BLOCK_PLACEHOLDER_COLOR);
@@ -229,32 +238,32 @@ class View {
     }
 
     drawScore(score) {
-        document.getElementById("score").innerText=score;
+        document.getElementById("score").innerText = score;
     }
+
     drawBackgroundBlock(i, j, color) {
         let block = document.createElement("div");
+        let position = this.gridToPosition(i, j);
         block.style.width = BLOCK_SIZE;
         block.style.height = BLOCK_SIZE;
         block.style.borderRadius = "5px";
         block.style.backgroundColor = color;
         block.style.position = "absolute";
-        block.style.top = i * (BLOCK_SIZE + MARGIN_SIZE) + MARGIN_SIZE;
-        block.style.left = j * (BLOCK_SIZE + MARGIN_SIZE) + MARGIN_SIZE; 
+        block.style.top = position[0];
+        block.style.left = position[1]; 
         this.container.append(block);
         return block;
     }
 
     drawBlock(i, j, number) {
         let span = document.createElement("span"); // span is an inline block
-        let text = document.createTextNode(number);
         let block = this.drawBackgroundBlock(i, j, BLOCK_BACKGROUND_COLOR_LIST[Math.floor(Math.log(number)/Math.log(2))-1]);
+        span.innerText = number;
         span.style.textAlign = "center";
         span.style.lineHeight = "130px";
         span.style.color = "white";
         span.style.fontFamily = "Consolas";
         span.style.fontWeight = "bold";
-        span.style.fontSize = "58px";
-        span.appendChild(text);
         block.appendChild(span);
     }
 
