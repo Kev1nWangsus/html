@@ -59,6 +59,8 @@ class Game {
         this.data = [];
         this.score = 0;
         this.initializeData();
+        this.victory = false;
+        this.continue = false;
     }
 
     initializeData() {
@@ -85,7 +87,7 @@ class Game {
             }
         }
         let position = randChoice(possiblePositions);
-        this.data[position[0]][position[1]] = randChoice([2, 2, 2, 2, 2, 2, 2, 2, 4]);
+        this.data[position[0]][position[1]] = randChoice([2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4]);
     }
 
     /*arr = [2, null, 2, null]
@@ -106,6 +108,7 @@ class Game {
         let head = 0;
         let tail = 1;
         let incr = 1;
+
         if (reverse == true) {
             head = arr.length - 1;
             tail = head - 1;
@@ -121,6 +124,9 @@ class Game {
                     tail += incr;
                 } else if (arr[head] == arr[tail]) {
                     arr[head] = arr[head] * 2;
+                    if (arr[head] == 2048) {
+                        this.victory = true;
+                    }
                     this.score += arr[head]
                     arr[tail] = null;
                     head += incr;
@@ -159,6 +165,15 @@ class Game {
             this.generateNewBlock();
             this.score += 2;
         }   
+    }
+    
+    checkContinue() {
+        var con = confirm('Congratulations! You hit 2048!');
+        if (con) {
+            this.continue = true;
+        } else {
+            location.reload();
+        }
     }
 }
 
@@ -285,5 +300,11 @@ document.onkeydown = function(event) {
     } else if (event.key == "ArrowUp") {
         game.advance("up");
     }
-    view.drawGame()
+
+    if (game.victory && !game.continue) {
+        setTimeout("view.drawGame(); game.checkContinue()", 0);
+    }
+
+    view.drawGame(); 
+  
 }
