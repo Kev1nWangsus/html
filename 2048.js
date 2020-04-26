@@ -1,11 +1,17 @@
 // Constant
-CANVAS_SIZE = 600;
-CANVAS_BACKGROUND_COLOR = "dce4eb";
+ANIMATION_TIME = 0.15;
+FRAME_PER_SECOND = 60;
 GAME_SIZE = 4;
+CANVAS_SIZE = 600;
 BLOCK_SIZE = 130;
+
+MARGIN_SIZE = (CANVAS_SIZE - BLOCK_SIZE * GAME_SIZE) / 5;
+
+CANVAS_BACKGROUND_COLOR = "dce4eb";
 BLOCK_PLACEHOLDER_COLOR = "c1cdd7";
-MARGIN_SIZE = (CANVAS_SIZE-BLOCK_SIZE*GAME_SIZE)/5;
 BLOCK_BACKGROUND_COLOR_LIST = ["b1cde7", "9ec0e0", "97bcde", "8bb4da", "77a7d4", "649bce", "3d82c2", "31689b", "254e74", "254e74", "18344e"];
+
+
 
 // Global Utility Functions
 randInt = function(a, b) {
@@ -27,7 +33,7 @@ sum = function (arr) {
 }
 
 copyArray = function(arr1) {
-    arr2 = [];
+    var arr2 = [];
     for (let i = 0; i < arr1.length; i++) {
         let tmp = [];
         for (let j = 0; j < arr1[i].length; j++) {
@@ -60,6 +66,7 @@ class Game {
         this.score = 0;
         this.initializeData();
         this.victory = false;
+        this.loss = false;
         this.continue = false;
     }
 
@@ -87,7 +94,7 @@ class Game {
             }
         }
         let position = randChoice(possiblePositions);
-        this.data[position[0]][position[1]] = randChoice([2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4]);
+        this.data[position[0]][position[1]] = randChoice([2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4]);
     }
 
     /*arr = [2, null, 2, null]
@@ -108,7 +115,7 @@ class Game {
         let head = 0;
         let tail = 1;
         let incr = 1;
-
+        let moves = [];
         if (reverse == true) {
             head = arr.length - 1;
             tail = head - 1;
@@ -121,6 +128,7 @@ class Game {
                 if (arr[head] == null) {
                     arr[head] = arr[tail];
                     arr[tail] = null;
+                    moves.push([tail, head])
                     tail += incr;
                 } else if (arr[head] == arr[tail]) {
                     arr[head] = arr[head] * 2;
@@ -129,6 +137,7 @@ class Game {
                     }
                     this.score += arr[head]
                     arr[tail] = null;
+                    moves.push([tail, head])
                     head += incr;
                     tail += incr;
                 } else {
@@ -139,15 +148,17 @@ class Game {
                 }
             }
         }
-        return arr;
+        return moves;
     }
 
     advance(command) {
-        let copy = copyArray(this.data);
         let reverse = (command == "right" || command == "down")
-        if (command == "left" || command == "right") {
+        let moves = [];
+        if (command == "left" || command == "right") {   
             for (let i = 0; i < GAME_SIZE; i++) {
-                this.shiftBlock(this.data[i], reverse);
+                let rowMove = this.shiftBlock(this.data[i], reverse);
+                for (let move of rowMove)
+                    moves.push([[i, move[0]], [i, move[1]]]);
             }
         } else if (command == "up" || command == "down") {
             for (let j = 0; j < GAME_SIZE; j++) {
@@ -155,25 +166,64 @@ class Game {
                 for (let i = 0; i < GAME_SIZE; i++) {
                     tmp.push(this.data[i][j]);
                 }
-                this.shiftBlock(tmp, reverse);
+                let colMove = this.shiftBlock(tmp, reverse);
+                for (let move of colMove) {
+                    moves.push([[move[0], j], [move[1], j]]);
+                }
                 for (let i = 0; i < GAME_SIZE; i++) {
                     this.data[i][j] = tmp[i];
                 }
             }
         }
-        if (!compareArray(this.data, copy)){
+
+        if (moves.length){
             this.generateNewBlock();
             this.score += 2;
         }   
+
+        game.checkGameOver();
+
+        return moves;
+    }
+
+    checkGameOver() {
+        let row = 0, col = 0;
+        for (let i = 0; i < GAME_SIZE; i++) {
+            for (let j = 0; j < GAME_SIZE - 1; j++) {
+                if (this.data[i][j] && this.data[i][j+1]) {
+                    if (this.data[i][j] != this.data[i][j+1]){
+                        row++;
+                    }
+                }
+            }
+        }
+        for (let i = 0; i < GAME_SIZE; i++) {
+            for (let j = 0; j < GAME_SIZE - 1; j++) {
+                if (this.data[j][i] && this.data[j+1][i]) {
+                    if (this.data[j][i] != this.data[j+1][i]){
+                        col++;
+                    }
+                }
+            }
+        }
+        console.log(row);
+        console.log(col);
+        if (row == 12 && col == 12) {
+            this.loss = true;
+        }
     }
     
     checkContinue() {
-        var con = confirm('Congratulations! You hit 2048!');
+        var con = setTimeout("confirm('Congratulations! You hit 2048!')", 500);
         if (con) {
             this.continue = true;
         } else {
             location.reload();
         }
+    }
+
+    showLoss() {
+        setTimeout("alert('Oops! You lost. Try again?');location.reload()", 500);        
     }
 }
 
@@ -220,6 +270,7 @@ class View {
         this.game = game;
         this.container = container;
         this.initializeContainer();
+        this.blocks = []
     }
 
     initializeContainer() {
@@ -233,21 +284,56 @@ class View {
     }
 
     gridToPosition(i, j) {
-        let top = i *(BLOCK_SIZE + MARGIN_SIZE) + MARGIN_SIZE;
+        let top = i * (BLOCK_SIZE + MARGIN_SIZE) + MARGIN_SIZE;
         let left = j * (BLOCK_SIZE + MARGIN_SIZE) + MARGIN_SIZE;
 
         return [top, left];
     }
     
-    drawGame() {
-        this.container.innerHTML = "";
-        for (let i = 0; i < GAME_SIZE; i++) {
-            for (let j = 0; j < GAME_SIZE; j++) {
-                this.drawBackgroundBlock(i, j, BLOCK_PLACEHOLDER_COLOR);
-                if (this.game.data[i][j]) {
-                    this.drawBlock(i, j, this.game.data[i][j]);
+    animate(moves) {
+        this.doFrame(moves, 0, ANIMATION_TIME);
+    }
+
+    doFrame(moves, currTime, totalTime) {
+        if (currTime < totalTime) {
+            setTimeout(() => {
+                this.doFrame(moves, currTime + 1 / FRAME_PER_SECOND, totalTime)
+            }, 1 / FRAME_PER_SECOND * 1000);
+
+            for (let move of moves) {
+                // moves -> [ [ [i, j], [i, j] ], [] ];
+                // move -> [ [i, j], [i, j] ]
+                let block = this.blocks[move[0][0]][move[0][1]]
+                let origin = this.gridToPosition(move[0][0], move[0][1]);
+                let destination = this.gridToPosition(move[1][0], move[1][1]);
+                let currPosition = [
+                    origin[0] + currTime / totalTime * (destination[0] - origin[0]),
+                    origin[1] + currTime / totalTime * (destination[1] - origin[1])                        
+                ]
+                if (block){
+                    block.style.top = currPosition[0];
+                    block.style.left = currPosition[1];
                 }
             }
+        } else {
+            view.drawGame();
+        }
+    }
+
+    drawGame() {
+        this.container.innerHTML = "";
+        this.blocks = []
+        for (let i = 0; i < GAME_SIZE; i++) {
+            let tmp = [];
+            for (let j = 0; j < GAME_SIZE; j++) {
+                this.drawBackgroundBlock(i, j, BLOCK_PLACEHOLDER_COLOR);
+                let block = null;
+                if (this.game.data[i][j]) {
+                    block = this.drawBlock(i, j, this.game.data[i][j]);
+                }
+                tmp.push(block);
+            }
+            this.blocks.push(tmp)
         }
         this.drawScore(this.game.score);
     }
@@ -266,6 +352,7 @@ class View {
         block.style.position = "absolute";
         block.style.top = position[0];
         block.style.left = position[1]; 
+        block.style.zIndex = 3;
         this.container.append(block);
         return block;
     }
@@ -280,6 +367,8 @@ class View {
         span.style.fontFamily = "Consolas";
         span.style.fontWeight = "bold";
         block.appendChild(span);
+        block.style.zIndex = 5;
+        return block;
     }
 
 }
@@ -292,19 +381,22 @@ view.drawGame();
 
 document.onkeydown = function(event) {
     if (event.key == "ArrowLeft"){
-        game.advance("left");
+        moves = game.advance("left");
     } else if (event.key == "ArrowRight") {
-        game.advance("right");
+        moves = game.advance("right");
     } else if (event.key == "ArrowDown") {
-        game.advance("down");
+        moves = game.advance("down");
     } else if (event.key == "ArrowUp") {
-        game.advance("up");
+        moves = game.advance("up");
     }
 
-    if (game.victory && !game.continue) {
-        setTimeout("view.drawGame(); game.checkContinue()", 0);
-    }
-
-    view.drawGame(); 
-  
+    if (moves.length > 0){
+        view.animate(moves);
+        if (game.loss) {
+            game.showLoss();
+        }
+        if (game.victory && !game.continue) {
+            game.checkContinue();
+        }
+    }    
 }
